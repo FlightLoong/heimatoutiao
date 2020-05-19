@@ -12,7 +12,8 @@ const routes = [
   },
   {
     path: '/',
-    name: 'layout',
+    // 如果父路由设置了默认路由，那么父路由的 name 属性没有任何意义
+    // name: 'layout',
     component: () => import('@/views/layout'),
     children: [
       {

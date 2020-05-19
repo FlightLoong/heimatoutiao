@@ -1,7 +1,9 @@
 <template>
   <div class="login-container">
     <!-- 顶部导航栏 -->
-    <van-nav-bar class="page-nav-bar" title="登录"/>
+    <van-nav-bar class="page-nav-bar" title="登录">
+      <van-icon slot="left" name="arrow-left" @click="$router.back()" />
+    </van-nav-bar>
     <!-- 登录表单 -->
     <van-form ref="loginFormRef" @submit="onSubmit">
       <!-- 请输入手机号区域 -->
