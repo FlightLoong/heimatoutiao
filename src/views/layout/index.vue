@@ -1,7 +1,7 @@
 <template>
   <div class="layout-container">
     <!-- 子路由切换 -->
-    <router-view/>
+    <router-view />
     <!-- 标签导航栏 -->
     <van-tabbar class="layout-tabbar" route>
       <van-tabbar-item icon="home-o" to="/">
@@ -26,7 +26,8 @@
 
 <script>
 export default {
-  name: 'LayoutIndex'
+  name: 'LayoutIndex',
+  created() {}
 }
 </script>
 

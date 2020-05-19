@@ -1,5 +1,5 @@
 <template>
-  <div class="my-container">
+<div class="my-container">
     <div v-if="!user" class="header not-login">
       <div class="login-btn" @click="$router.push('/login')">
         <img class="mobile-img" src="~@/assets/mobile.png" alt="">
@@ -9,8 +9,8 @@
     <div v-else class="header user-info">
       <div class="base-info">
         <div class="left">
-          <van-image class="avatar" fit="cover" round src="https://img.yzcdn.cn/vant/cat.jpeg"/>
-          <span class="name">黑马头条号</span>
+          <van-image class="avatar" fit="cover" round :src="userInfo.photo"/>
+          <span class="name">{{ userInfo.name }}</span>
         </div>
         <div class="right">
           <van-button class="btn" size="mini" round>编辑资料</van-button>
@@ -18,19 +18,19 @@
       </div>
       <div class="data-stats">
         <div class="data-item">
-          <div class="count">8</div>
+          <div class="count">{{ userInfo.art_count }}</div>
           <div class="text">头条</div>
         </div>
         <div class="data-item">
-          <div class="count">8</div>
+          <div class="count">{{ userInfo.follow_count }}</div>
           <div class="text">关注</div>
         </div>
         <div class="data-item">
-          <div class="count">8</div>
+          <div class="count">{{ userInfo.fans_count }}</div>
           <div class="text">粉丝</div>
         </div>
         <div class="data-item">
-          <div class="count">8</div>
+          <div class="count">{{ userInfo.like_count }}</div>
           <div class="text">获赞</div>
         </div>
       </div>
@@ -47,20 +47,29 @@
       </van-grid-item>
     </van-grid>
     <!-- 单元格组件 -->
-    <van-cell title="消息通知" is-link />
-    <van-cell class="mb-9" title="小智同学" is-link />
-    <van-cell clickable v-if="user" class="logout-cell" title="退出登录"  @click="onLogout"/>
+    <van-cell title="消息通知" is-link/>
+    <van-cell class="mb-9" title="小智同学" is-link/>
+    <van-cell clickable v-if="user" class="logout-cell" title="退出登录" @click="onLogout"/>
   </div>
 </template>
 
 <script>
 // 导入 vuex
 import { mapState } from 'vuex'
+import { getUserInfo } from '@/api/user.js'
 
 export default {
+  data () {
+    return {
+      userInfo: {}
+    }
+  },
   name: 'MyIndex',
   computed: {
     ...mapState(['user'])
+  },
+  created () {
+    this.loadUserInfo()
   },
   methods: {
     // 退出登录
@@ -74,6 +83,17 @@ export default {
       }).catch(() => {
         // on cancel
       })
+    },
+
+    // 获取用户信息
+    async loadUserInfo () {
+      try {
+        const { data } = await getUserInfo()
+        console.log(data)
+        this.userInfo = data.data
+      } catch (err) {
+        this.$toast('获取数据失败，请稍后重试')
+      }
     }
   }
 }

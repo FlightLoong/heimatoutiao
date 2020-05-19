@@ -8,7 +8,7 @@
     <van-form ref="loginFormRef" @submit="onSubmit">
       <!-- 请输入手机号区域 -->
       <van-field
-        autocomplete=""
+        autocomplete
         name="mobile"
         v-model="user.mobile"
         placeholder="请输入手机号"
@@ -20,7 +20,7 @@
       </van-field>
       <!-- 请输入验证码区域 -->
       <van-field
-        autocomplete=""
+        autocomplete
         name="code"
         v-model="user.code"
         placeholder="请输入验证码"

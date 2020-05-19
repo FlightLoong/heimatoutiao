@@ -2,9 +2,5 @@
   "semi": false,
   "singleQuote": true,
   "printWidth": 200,
-  "space-before-function-paren": ["error", {
-    "anonymous": "always",
-    "named": "always",
-    "asyncArrow": "always"
-  }
+  "space-before-function-paren": "always"
 }
