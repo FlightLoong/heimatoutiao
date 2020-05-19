@@ -1,12 +1,12 @@
 <template>
   <div class="my-container">
-    <div class="header not-login">
+    <div v-if="!user" class="header not-login">
       <div class="login-btn" @click="$router.push('/login')">
         <img class="mobile-img" src="~@/assets/mobile.png" alt="">
         <span class="text">登录 / 注册</span>
       </div>
     </div>
-    <div class="header user-info">
+    <div v-else class="header user-info">
       <div class="base-info">
         <div class="left">
           <van-image class="avatar" fit="cover" round src="https://img.yzcdn.cn/vant/cat.jpeg"/>
@@ -47,15 +47,21 @@
       </van-grid-item>
     </van-grid>
     <!-- 单元格组件 -->
-    <van-cell title="消息通知" is-link to="index" />
+    <van-cell title="消息通知" is-link to="index"/>
     <van-cell class="mb-9" title="小智同学" is-link to="index"/>
-    <van-cell class="logout-cell" title="退出登录" to="index"/>
+    <van-cell v-if="user" class="logout-cell" title="退出登录" to="index"/>
   </div>
 </template>
 
 <script>
+// 导入 vuex
+import { mapState } from 'vuex'
+
 export default {
-  name: 'MyIndex'
+  name: 'MyIndex',
+  computed: {
+    ...mapState(['user'])
+  }
 }
 </script>
 
