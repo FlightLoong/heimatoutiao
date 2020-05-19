@@ -10,11 +10,29 @@
     <div class="header user-info">
       <div class="base-info">
         <div class="left">
-          <van-image width="100" height="100" src="https://img.yzcdn.cn/vant/cat.jpeg" />
-          <span>黑马头条号</span>
+          <van-image class="avatar" fit="cover" round src="https://img.yzcdn.cn/vant/cat.jpeg" />
+          <span class="name">黑马头条号</span>
         </div>
         <div class="right">
-          <van-button size="mini" round></van-button>
+          <van-button class="btn" size="mini" round>编辑资料</van-button>
+        </div>
+      </div>
+      <div class="data-stats">
+        <div class="data-item">
+          <div class="count">8</div>
+          <div class="text">头条</div>
+        </div>
+        <div class="data-item">
+          <div class="count">8</div>
+          <div class="text">关注</div>
+        </div>
+        <div class="data-item">
+          <div class="count">8</div>
+          <div class="text">粉丝</div>
+        </div>
+        <div class="data-item">
+          <div class="count">8</div>
+          <div class="text">获赞</div>
         </div>
       </div>
     </div>
@@ -55,6 +73,66 @@ export default {
       .text {
         font-size: 28px;
         color: #fff;
+      }
+    }
+  }
+
+  .user-info {
+    .base-info {
+      height: 231px;
+      padding: 76px 32px 23px;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+
+      .left {
+        display: flex;
+        align-items: center;
+
+        .avatar {
+          width: 132px;
+          height: 132px;
+          margin-right: 23px;
+          border: 3px solid #fff;
+        }
+
+        .name {
+          font-size: 30px;
+          color: #fff;
+        }
+      }
+
+      .right {
+        .btn {
+          width: 150px;
+          border-radius: 20px;
+          font-size: 16px;
+          height: 44px;
+          line-height: 44px;
+        }
+      }
+    }
+
+    .data-stats {
+      display: flex;
+
+      .data-item {
+        height: 130px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+
+        .count {
+          font-size: 36px;
+        }
+
+        .text {
+          font-size: 23px;
+        }
       }
     }
   }
