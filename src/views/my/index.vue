@@ -6,11 +6,10 @@
         <span class="text">登录 / 注册</span>
       </div>
     </div>
-
     <div class="header user-info">
       <div class="base-info">
         <div class="left">
-          <van-image class="avatar" fit="cover" round src="https://img.yzcdn.cn/vant/cat.jpeg" />
+          <van-image class="avatar" fit="cover" round src="https://img.yzcdn.cn/vant/cat.jpeg"/>
           <span class="name">黑马头条号</span>
         </div>
         <div class="right">
@@ -36,6 +35,21 @@
         </div>
       </div>
     </div>
+    <!-- 导航区域 -->
+    <van-grid class="grid-nav" :column-num="2" clickable>
+      <van-grid-item class="grid-item">
+        <i slot="icon" class="toutiao toutiao-shoucang"></i>
+        <span slot="text" class="text">收藏</span>
+      </van-grid-item>
+      <van-grid-item class="grid-item">
+        <i slot="icon" class="toutiao toutiao-lishi"></i>
+        <span slot="text" class="text">历史</span>
+      </van-grid-item>
+    </van-grid>
+    <!-- 单元格组件 -->
+    <van-cell title="消息通知" is-link to="index" />
+    <van-cell class="mb-9" title="小智同学" is-link to="index"/>
+    <van-cell class="logout-cell" title="退出登录" to="index"/>
   </div>
 </template>
 
@@ -135,6 +149,35 @@ export default {
         }
       }
     }
+  }
+
+  .grid-nav {
+    .grid-item {
+      height: 140px;
+      i.toutiao {
+        font-size: 45px;
+      }
+      .toutiao-shoucang {
+        color: #eb5253;
+      }
+
+      .toutiao-lishi {
+        color: #ff9f1d;
+      }
+
+      span.text {
+        font-size: 28px;
+      }
+    }
+  }
+
+  .logout-cell {
+    text-align: center;
+    color: #d86262;
+  }
+
+  .mb-9 {
+    margin-bottom: 9px;
   }
 }
 </style>
