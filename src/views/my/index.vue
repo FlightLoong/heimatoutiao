@@ -47,9 +47,9 @@
       </van-grid-item>
     </van-grid>
     <!-- 单元格组件 -->
-    <van-cell title="消息通知" is-link to="index"/>
-    <van-cell class="mb-9" title="小智同学" is-link to="index"/>
-    <van-cell v-if="user" class="logout-cell" title="退出登录" to="index"/>
+    <van-cell title="消息通知" is-link />
+    <van-cell class="mb-9" title="小智同学" is-link />
+    <van-cell clickable v-if="user" class="logout-cell" title="退出登录"  @click="onLogout"/>
   </div>
 </template>
 
@@ -61,6 +61,20 @@ export default {
   name: 'MyIndex',
   computed: {
     ...mapState(['user'])
+  },
+  methods: {
+    // 退出登录
+    onLogout () {
+      this.$dialog.confirm({
+        title: '确认退出吗？'
+      }).then(() => {
+        // 确认退出，清除登录状态
+        // 也就是需要清除本地存储以及状态管理中的数据
+        this.$store.commit('setUser', null)
+      }).catch(() => {
+        // on cancel
+      })
+    }
   }
 }
 </script>
