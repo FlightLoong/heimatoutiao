@@ -1,16 +1,23 @@
 <template>
   <div>
     <div class="article-list">
-      <van-list
-        :error.sync="error"
-        error-text="请求失败，点击重新加载"
-        v-model="loading"
-        :finished="finished"
-        finished-text="没有更多了"
-        @load="onLoad"
+      <van-pull-refresh
+        success-duration="1500"
+        v-model="isRefreshLoading"
+        @refresh="onRefresh"
+        :success-text="successText"
       >
-        <van-cell v-for="(item, index) in list" :key="index" :title="item.title" />
-      </van-list>
+        <van-list
+          :error.sync="error"
+          error-text="请求失败，点击重新加载"
+          v-model="loading"
+          :finished="finished"
+          finished-text="没有更多了"
+          @load="onLoad"
+        >
+          <van-cell v-for="(item, index) in list" :key="index" :title="item.title" />
+        </van-list>
+      </van-pull-refresh>
     </div>
   </div>
 </template>
@@ -26,7 +33,9 @@ export default {
       loading: false,
       finished: false,
       timestamp: '',
-      error: false
+      error: false,
+      isRefreshLoading: false,
+      successText: ''
     }
   },
   props: {
@@ -66,6 +75,30 @@ export default {
       } catch (error) {
         this.error = true
         this.loading = false
+      }
+    },
+
+    async onRefresh() {
+      try {
+        // 1. 获取文章数据
+        const { data } = await getArticle({
+          channel_id: this.channel.id,
+          timestamp: Date.now(),
+          with_top: 1
+        })
+
+        // 2. 将数据刷新追加到顶部
+        const { results } = data.data
+        this.list.unshift(...results)
+
+        // 3. 关闭下拉刷新的 loading 状态
+        this.isRefreshLoading = false
+
+        // 4. 提示刷新成功
+        this.successText = `刷新成功，更新了 ${results.length} 条`
+      } catch (error) {
+        this.$toast('刷新失败')
+        this.isRefreshLoading = false
       }
     }
   }
