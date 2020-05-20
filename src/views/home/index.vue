@@ -7,11 +7,13 @@
     </van-nav-bar>
 
     <!-- 文章频道列表 -->
-    <van-tabs v-model="active">
-      <van-tab v-for="item in channels" :title="item.name" :key="item.id">
-        <article-list :channel="item"></article-list>
-      </van-tab>
-    </van-tabs>
+    <div class="article-scroll-wrap" ref="article-scroll-wrap">
+      <van-tabs v-model="active" @change="onTabChange">
+        <van-tab v-for="item in channels" :title="item.name" :key="item.id">
+          <article-list :channel="item"></article-list>
+        </van-tab>
+      </van-tabs>
+    </div>
   </div>
 </template>
 
@@ -19,6 +21,8 @@
 import { getChannels } from '@/api/channel.js'
 // 导入组件
 import ArticleList from '@/components/article-list.vue'
+// 导入 lodash 方法
+import { debounce } from 'lodash'
 
 export default {
   name: 'HomeIndex',
@@ -33,6 +37,17 @@ export default {
   created() {
     this.loadChannels()
   },
+  computed: {
+    articleScrollWrap() {
+      return this.$refs['article-scroll-wrap']
+    }
+  },
+  mounted() {
+    const articleScrollWrap = this.articleScrollWrap
+    articleScrollWrap.onscroll = debounce(() => {
+      this.channels[this.active].scrollTop = articleScrollWrap.scrollTop
+    }, 50)
+  },
   methods: {
     // 获取文章频道列表的方法
     async loadChannels() {
@@ -41,6 +56,15 @@ export default {
         this.channels = data.data.channels
       } catch (error) {
         this.$toast('数据获取失败 ！')
+      }
+    },
+
+    onTabChange() {
+      const scrollTop = this.channels[this.active].scrollTop
+      if (scrollTop) {
+        this.$nextTick(() => {
+          this.articleScrollWrap.scrollTop = scrollTop
+        })
       }
     }
   },
@@ -80,5 +104,10 @@ export default {
   z-index: 1;
   left: 0;
   right: 0;
+}
+
+.article-scroll-wrap {
+  height: 79vh;
+  overflow-y: auto;
 }
 </style>
