@@ -1,7 +1,7 @@
 <template>
   <div class="home-container">
     <!-- 导航栏区域 -->
-    <van-nav-bar class="page-nav-bar">
+    <van-nav-bar class="page-nav-bar" fixed>
       <div class="logo" slot="left"></div>
       <van-button size="small" slot="right" icon="search" type="info" round>搜索</van-button>
     </van-nav-bar>
@@ -53,6 +53,7 @@ export default {
 <style lang="scss" scoped>
 .home-container {
   padding-bottom: 100px;
+  padding-top: 180px;
 
   .page-nav-bar {
     .logo {
@@ -72,5 +73,12 @@ export default {
       }
     }
   }
+}
+/deep/ .van-tabs__wrap {
+  position: fixed;
+  top: 92px;
+  z-index: 1;
+  left: 0;
+  right: 0;
 }
 </style>
