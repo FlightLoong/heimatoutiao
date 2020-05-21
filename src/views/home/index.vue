@@ -8,7 +8,7 @@
 
     <!-- 文章频道列表 -->
     <div class="article-scroll-wrap" ref="article-scroll-wrap">
-      <van-tabs v-model="active" @change="onTabChange">
+      <van-tabs v-model="active" @change="onTabChange" animated swipeable>
         <van-tab v-for="item in channels" :title="item.name" :key="item.id">
           <article-list :channel="item"></article-list>
         </van-tab>
