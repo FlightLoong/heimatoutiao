@@ -12,8 +12,21 @@
         <van-tab v-for="item in channels" :title="item.name" :key="item.id">
           <article-list :channel="item"></article-list>
         </van-tab>
+        <van-icon class="wap-nav" slot="nav-right" name="wap-nav" @click="isEditChannelShow = true" />
       </van-tabs>
     </div>
+
+    <!-- 编辑区域 -->
+    <van-popup
+      class="edit-channel-popup"
+      v-model="isEditChannelShow"
+      position="bottom"
+      :style="{ height: '100%' }"
+      closeable
+      close-icon-position="top-left"
+    >
+      <channel-edit :user-channels="channels" :active-index="active" />
+    </van-popup>
   </div>
 </template>
 
@@ -21,6 +34,7 @@
 import { getChannels } from '@/api/channel.js'
 // 导入组件
 import ArticleList from './components/article-list.vue'
+import ChannelEdit from './components/channel-edit.vue'
 // 导入 lodash 方法
 import { debounce } from 'lodash'
 
@@ -31,7 +45,9 @@ export default {
       // 被激活的标签页
       active: 0,
       // 文章评论列表
-      channels: []
+      channels: [],
+      // 弹出层状态
+      isEditChannelShow: false
     }
   },
   created() {
@@ -76,7 +92,8 @@ export default {
     }
   },
   components: {
-    ArticleList
+    ArticleList,
+    ChannelEdit
   }
 }
 </script>
@@ -116,5 +133,18 @@ export default {
 .article-scroll-wrap {
   height: 79vh;
   overflow-y: auto;
+}
+
+.edit-channel-popup {
+  padding-top: 100px;
+  box-sizing: border-box;
+}
+
+.wap-nav {
+  position: fixed;
+  right: 0;
+  line-height: 80px;
+  background-color: #fff;
+  opacity: 0.8;
 }
 </style>
