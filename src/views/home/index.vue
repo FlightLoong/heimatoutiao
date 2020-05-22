@@ -20,7 +20,7 @@
 <script>
 import { getChannels } from '@/api/channel.js'
 // 导入组件
-import ArticleList from '@/components/article-list.vue'
+import ArticleList from './components/article-list.vue'
 // 导入 lodash 方法
 import { debounce } from 'lodash'
 
@@ -48,6 +48,9 @@ export default {
       this.channels[this.active].scrollTop = articleScrollWrap.scrollTop
     }, 50)
   },
+  activated() {
+    this.onTabChange()
+  },
   methods: {
     // 获取文章频道列表的方法
     async loadChannels() {
@@ -60,7 +63,11 @@ export default {
     },
 
     onTabChange() {
-      const scrollTop = this.channels[this.active].scrollTop
+      const activeChannel = this.channels[this.active]
+      if (!activeChannel) {
+        return
+      }
+      const scrollTop = activeChannel.scrollTop
       if (scrollTop) {
         this.$nextTick(() => {
           this.articleScrollWrap.scrollTop = scrollTop

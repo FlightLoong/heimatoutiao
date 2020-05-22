@@ -15,7 +15,7 @@
           finished-text="没有更多了"
           @load="onLoad"
         >
-          <van-cell v-for="(item, index) in list" :key="index" :title="item.title" />
+          <article-item  v-for="(item, index) in list" :key="index" :item="item"></article-item>
         </van-list>
       </van-pull-refresh>
     </div>
@@ -24,6 +24,7 @@
 
 <script>
 import { getArticle } from '@/api/article.js'
+import ArticleItem from '@/components/article-item.vue'
 
 export default {
   name: 'ArticleList',
@@ -57,7 +58,7 @@ export default {
 
         // 2. 将数据添加大 list 数组中
         const { results } = data.data
-        console.log(results)
+        // console.log(results)
         this.list.push(...results)
 
         // 3. 加载状态结束
@@ -71,7 +72,7 @@ export default {
           // 如果数据请求完成，将加载状态设置为 true，不在触发上拉加载
           this.finished = true
         }
-        console.log(data)
+        // console.log(data)
       } catch (error) {
         this.error = true
         this.loading = false
@@ -101,6 +102,9 @@ export default {
         this.isRefreshLoading = false
       }
     }
+  },
+  components: {
+    ArticleItem
   }
 }
 </script>

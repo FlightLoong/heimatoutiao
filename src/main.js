@@ -8,7 +8,7 @@ import store from './store'
 import 'amfe-flexible'
 
 // 导入 vant 核心组件库
-import Vant from 'vant'
+import Vant, { Lazyload } from 'vant'
 // 导入 vant 全局样式
 import 'vant/lib/index.css'
 
@@ -17,8 +17,14 @@ import 'vant/lib/index.css'
 // 否则容易出现自己的样式被覆盖的情况
 import './styles/index.scss'
 
+// 导入时间格式化插件
+import './utils/dayjs.js'
+
 // 注册并使用 vant 组件库
 Vue.use(Vant)
+Vue.use(Lazyload, {
+  preload: 1.3
+})
 
 Vue.config.productionTip = false
 

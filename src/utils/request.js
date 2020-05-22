@@ -4,6 +4,7 @@ import store from '@/store'
 
 const request = axios.create({
   baseURL: 'http://ttapi.research.itcast.cn'
+  // baseURL: 'http://api-toutiao-web.itheima.net'
 })
 
 // 添加请求拦截器

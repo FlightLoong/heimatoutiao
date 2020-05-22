@@ -69,7 +69,12 @@ export default {
     ...mapState(['user'])
   },
   created () {
-    this.loadUserInfo()
+    // this.loadUserInfo()
+  },
+  activated () {
+    if (this.$store.state.user) {
+      this.loadUserInfo()
+    }
   },
   methods: {
     // 退出登录
