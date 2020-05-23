@@ -10,7 +10,12 @@
       >{{ isEditShow ? '完成' : '编辑' }}</van-button>
     </van-cell>
     <van-grid :gutter="10" clickable>
-      <van-grid-item class="channel-item" v-for="(item, index) in userChannels" :key="index" @click="onUserChannerClick(item, index)">
+      <van-grid-item
+        class="channel-item"
+        v-for="(item, index) in userChannels"
+        :key="index"
+        @click="onUserChannerClick(item, index)"
+      >
         <div class="text-wrap">
           <span :class="{ active: index === activeIndex }">{{ item.name }}</span>
         </div>
@@ -89,9 +94,16 @@ export default {
     },
 
     // 切换频道
-    onUserChannerClick (item, index) {
+    onUserChannerClick(item, index) {
       if (this.isEditShow) {
-        // 编辑状态
+        if (item.name === '推荐') {
+          return
+        }
+        if (index <= this.activeIndex) {
+          this.$emit('update:active-index', this.activeIndex - 1)
+        }
+        // 编辑状态时执行删除操作
+        this.userChannels.splice(index, 1)
       } else {
         // 非编辑状态
         this.$emit('update:active-index', index)
