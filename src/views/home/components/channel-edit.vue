@@ -41,7 +41,12 @@
 </template>
 
 <script>
-import { getAllChannels } from '@/api/channel.js'
+import { getAllChannels, addUserChannel } from '@/api/channel.js'
+// 导入 vuex
+import { mapState } from 'vuex'
+// 导入本地存储的方法
+import { setItem } from '@/utils/storage.js'
+
 export default {
   name: 'ChannelEdit',
   data() {
@@ -65,6 +70,7 @@ export default {
     this.loadAllChannels()
   },
   computed: {
+    ...mapState(['user']),
     recommendChannels() {
       return this.allChannels.filter(item => {
         return (
@@ -89,8 +95,20 @@ export default {
       }
     },
 
-    onAddChannel(channel) {
-      this.userChannels.push(channel)
+    async onAddChannel(channel) {
+      try {
+        this.userChannels.push(channel)
+        if (this.user) {
+          await addUserChannel([{
+            id: channel.id,
+            seq: this.userChannels.length
+          }])
+        } else {
+          setItem('channels', this.userChannels)
+        }
+      } catch (error) {
+        this.$toast('添加频道失败')
+      }
     },
 
     // 切换频道
