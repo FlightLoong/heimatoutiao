@@ -25,7 +25,7 @@
       closeable
       close-icon-position="top-left"
     >
-      <channel-edit :user-channels="channels" :active-index="active" />
+      <channel-edit :user-channels="channels" :active-index.sync="active" @close-popup="isEditChannelShow = false" />
     </van-popup>
   </div>
 </template>

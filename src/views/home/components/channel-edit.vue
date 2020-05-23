@@ -1,13 +1,20 @@
 <template>
   <div class="channel-edit">
     <van-cell title="我的频道" :border="false">
-      <van-button size="mini" round type="danger" plain>编辑</van-button>
+      <van-button
+        size="mini"
+        round
+        type="danger"
+        plain
+        @click="isEditShow = !isEditShow"
+      >{{ isEditShow ? '完成' : '编辑' }}</van-button>
     </van-cell>
     <van-grid :gutter="10" clickable>
-      <van-grid-item class="channel-item" v-for="(item, index) in userChannels" :key="index">
-        <div slot="text" class="text-wrap">
+      <van-grid-item class="channel-item" v-for="(item, index) in userChannels" :key="index" @click="onUserChannerClick(item, index)">
+        <div class="text-wrap">
           <span :class="{ active: index === activeIndex }">{{ item.name }}</span>
         </div>
+        <van-icon v-show="isEditShow" name="clear" />
       </van-grid-item>
     </van-grid>
     <van-cell title="频道推荐" :border="false"></van-cell>
@@ -34,7 +41,9 @@ export default {
   name: 'ChannelEdit',
   data() {
     return {
-      allChannels: []
+      allChannels: [],
+      // 我的频道是否可编辑
+      isEditShow: false
     }
   },
   props: {
@@ -77,6 +86,17 @@ export default {
 
     onAddChannel(channel) {
       this.userChannels.push(channel)
+    },
+
+    // 切换频道
+    onUserChannerClick (item, index) {
+      if (this.isEditShow) {
+        // 编辑状态
+      } else {
+        // 非编辑状态
+        this.$emit('update:active-index', index)
+        this.$emit('close-popup')
+      }
     }
   }
 }
@@ -105,6 +125,14 @@ export default {
     .active {
       color: red;
     }
+  }
+
+  .van-icon-clear {
+    position: absolute;
+    right: -10px;
+    top: -10px;
+    color: #cacaca;
+    font-size: 36px;
   }
 }
 
