@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { getAllChannels, addUserChannel } from '@/api/channel.js'
+import { getAllChannels, addUserChannel, deleteUserChannel } from '@/api/channel.js'
 // 导入 vuex
 import { mapState } from 'vuex'
 // 导入本地存储的方法
@@ -99,10 +99,12 @@ export default {
       try {
         this.userChannels.push(channel)
         if (this.user) {
-          await addUserChannel([{
-            id: channel.id,
-            seq: this.userChannels.length
-          }])
+          await addUserChannel([
+            {
+              id: channel.id,
+              seq: this.userChannels.length
+            }
+          ])
         } else {
           setItem('channels', this.userChannels)
         }
@@ -122,10 +124,26 @@ export default {
         }
         // 编辑状态时执行删除操作
         this.userChannels.splice(index, 1)
+        this.deleteChannel(item)
       } else {
         // 非编辑状态
         this.$emit('update:active-index', index)
         this.$emit('close-popup')
+      }
+    },
+
+    // 删除频道
+    async deleteChannel(item) {
+      try {
+        if (this.user) {
+          // 已登录
+          await deleteUserChannel(item.id)
+        } else {
+          setItem('channels', this.userChannels)
+        }
+      } catch (error) {
+        console.log(error)
+        this.$toast('删除频道失败，请稍后重试')
       }
     }
   }
