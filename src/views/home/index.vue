@@ -12,7 +12,12 @@
         <van-tab v-for="item in channels" :title="item.name" :key="item.id">
           <article-list :channel="item"></article-list>
         </van-tab>
-        <van-icon class="wap-nav" slot="nav-right" name="wap-nav" @click="isEditChannelShow = true" />
+        <van-icon
+          class="wap-nav"
+          slot="nav-right"
+          name="wap-nav"
+          @click="isEditChannelShow = true"
+        />
       </van-tabs>
     </div>
 
@@ -25,7 +30,11 @@
       closeable
       close-icon-position="top-left"
     >
-      <channel-edit :user-channels="channels" :active-index.sync="active" @close-popup="isEditChannelShow = false" />
+      <channel-edit
+        :user-channels="channels"
+        :active-index.sync="active"
+        @close-popup="isEditChannelShow = false"
+      />
     </van-popup>
   </div>
 </template>
@@ -37,6 +46,9 @@ import ArticleList from './components/article-list.vue'
 import ChannelEdit from './components/channel-edit.vue'
 // 导入 lodash 方法
 import { debounce } from 'lodash'
+import { getItem } from '@/utils/storage.js'
+// 导入 vuex 数据
+import { mapState } from 'vuex'
 
 export default {
   name: 'HomeIndex',
@@ -54,8 +66,16 @@ export default {
     this.loadChannels()
   },
   computed: {
+    ...mapState(['user']),
     articleScrollWrap() {
       return this.$refs['article-scroll-wrap']
+    }
+  },
+  watch: {
+    // 监听用户登录状态
+    user() {
+      // 将频道初始化到激活状态
+      this.active = 0
     }
   },
   mounted() {
@@ -66,13 +86,35 @@ export default {
   },
   activated() {
     this.onTabChange()
+    this.loadChannels()
   },
   methods: {
     // 获取文章频道列表的方法
     async loadChannels() {
       try {
-        const { data } = await getChannels()
-        this.channels = data.data.channels
+        // const { data } = await getChannels()
+        // this.channels = data.data.channels
+        // 已经登录，获取线上数据
+        let channels = []
+        if (this.user) {
+          const { data } = await getChannels()
+          channels = data.data.channels
+        } else {
+          console.log('1')
+          // 没有登录，获取本地数据使用
+          const localChannels = getItem('channels')
+          console.log(localChannels)
+          if (localChannels) {
+            channels = localChannels
+          } else {
+            // 如果本地没有数据，则请求默认的频道数据
+            const { data } = await getChannels()
+            channels = data.data.channels
+          }
+        }
+
+        // console.log(channels)
+        this.channels = channels
       } catch (error) {
         this.$toast('数据获取失败 ！')
       }
